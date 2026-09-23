@@ -1100,6 +1100,9 @@ class BattlePokemonSearch extends BattleTypedSearch<'pokemon'> {
 				break;
 			case 'syclar':
 				results.push(['header', "CAP"]);
+					break;
+			case 'evilneuro': // ← your first custom Pokemon's ID
+				results.push(['header', "Vtuber"]);
 				break;
 			case 'pikachucosplay':
 				continue;
@@ -1255,6 +1258,9 @@ class BattlePokemonSearch extends BattleTypedSearch<'pokemon'> {
 			tierSet = tierSet.slice(slices.Uber);
 		} else if (this.formatType === 'rs' || this.formatType === 'frlg') {
 			tierSet = tierSet.slice(slices.Regular);
+		} else if (format.startsWith('Vtuber')) {
+			// Show full tierSet for custom formats including custom tiers
+			 return this.getDefaultResults();
 		} else if (!isDoublesOrBS) {
 			tierSet = [
 				...tierSet.slice(slices.OU, slices.UU),
