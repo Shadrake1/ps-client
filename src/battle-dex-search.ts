@@ -1258,9 +1258,27 @@ class BattlePokemonSearch extends BattleTypedSearch<'pokemon'> {
 			tierSet = tierSet.slice(slices.Uber);
 		} else if (this.formatType === 'rs' || this.formatType === 'frlg') {
 			tierSet = tierSet.slice(slices.Regular);
-		} else if (format.startsWith('Vtuber')) {
-			// Show full tierSet for custom formats including custom tiers
-			 return this.getDefaultResults();
+		} else if (format.startsWith('custom') && format !== 'customgame') {
+			const customTiers = ['Vtuber', 'Other']; // ← your tier names
+			const byTier: { [tier: string]: ID[] } = {};
+			for (const id in this.getTable()) {
+				const pokemon = this.dex.species.get(id as ID);
+				const tier = pokemon.tier; // read directly, bypass teambuilder table
+				if (customTiers.includes(tier)) {
+					if (!byTier[tier]) byTier[tier] = [];
+					byTier[tier].push(id as ID);
+				}
+			}
+			const results: SearchRow[] = [];
+			for (const tier of customTiers) {
+				if (byTier[tier]?.length) {
+					results.push(['header', tier]);
+					for (const id of byTier[tier]) {
+						results.push(['pokemon', id as ID]);
+					}
+				}
+			}
+			return results;
 		} else if (!isDoublesOrBS) {
 			tierSet = [
 				...tierSet.slice(slices.OU, slices.UU),
