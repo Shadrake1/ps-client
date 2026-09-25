@@ -92,7 +92,8 @@
 					Config.defaultserver = {
 						id: m[1],
 						host: m[2],
-						port: (m[3] && parseInt(m[3].substr(1))) || 8000
+						port: (m[3] && parseInt(m[3].substr(1))) || 8000,
+        				registered: false  // ← add this line
 					};
 				} else {
 					alert('Unrecognised query string syntax: ' + location.search);

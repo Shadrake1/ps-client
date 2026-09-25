@@ -959,6 +959,12 @@ export const Dex = new class implements ModdedDex {
 			facing = 'back';
 		}
 
+		// Custom Pokemon (num > 10000): serve from local http-server
+		if (species.num > 10000) {
+			spriteData.url = 'http://localhost:8080/sprites/gen5' + dir + '/' + name + '.png';
+			return spriteData;
+		}
+
 		// Decide which gen sprites to use.
 		//
 		// There are several different generations we care about here:
@@ -1168,6 +1174,18 @@ export const Dex = new class implements ModdedDex {
 			}
 		}
 		if (species.exists === false) return { spriteDir: 'sprites/gen5', spriteid: '0', x: 10, y: 5, pixelated: true };
+
+		// Custom Pokemon (num > 10000): serve from local http-server
+		if (species.num > 10000) {
+			return {
+				spriteid: spriteid || species.spriteid || id,
+				spriteDir: 'http://localhost:8080/sprites/dex',
+				x: -2,
+				y: -3,
+				pixelated: true,
+			};
+		}
+
 		if (Dex.afdMode) {
 			return {
 				spriteid,
@@ -1190,8 +1208,8 @@ export const Dex = new class implements ModdedDex {
 		// TODO: refactor after we get home sprites for Z-A Megas and Eternal Floette
 		let homeExists = (!species.isNonstandard || !['CAP', 'Custom'].includes(species.isNonstandard) ||
 			species.id === "xerneasneutral") && ![
-			"floetteeternal", "pichuspikyeared", "pikachubelle", "pikachucosplay", "pikachulibre", "pikachuphd", "pikachupopstar", "pikachurockstar",
-		].includes(species.id) && !(species.isMega && species.gen === 9);
+				"floetteeternal", "pichuspikyeared", "pikachubelle", "pikachucosplay", "pikachulibre", "pikachuphd", "pikachupopstar", "pikachurockstar",
+			].includes(species.id) && !(species.isMega && species.gen === 9);
 		if (gen >= 8 && homeExists) {
 			spriteData.spriteDir = 'sprites/home-centered';
 			spriteData.x = 8;
@@ -1235,7 +1253,10 @@ export const Dex = new class implements ModdedDex {
 		const data = this.getTeambuilderSpriteData(pokemon, dex);
 		const shiny = (data.shiny ? '-shiny' : '');
 		const resize = (data.h ? `background-size:${data.h}px` : '');
-		return `background-image:url(${Dex.resourcePrefix}${data.spriteDir}${shiny}/${data.spriteid}.png);background-position:${data.x + xOffset}px ${data.y + yOffset}px;background-repeat:no-repeat;${resize}`;
+		const spriteUrl = data.spriteDir.startsWith('http')
+			? `${data.spriteDir}/${data.spriteid}.png`
+			: `${Dex.resourcePrefix}${data.spriteDir}${shiny}/${data.spriteid}.png`;
+		return `background-image:url(${spriteUrl});background-position:${data.x + xOffset}px ${data.y + yOffset}px;background-repeat:no-repeat;${resize}`;
 	}
 
 	getItemIcon(item: any) {
@@ -1260,14 +1281,14 @@ export const Dex = new class implements ModdedDex {
 		const categoryID = toID(category);
 		let sanitizedCategory = '';
 		switch (categoryID) {
-		case 'physical':
-		case 'special':
-		case 'status':
-			sanitizedCategory = categoryID.charAt(0).toUpperCase() + categoryID.slice(1);
-			break;
-		default:
-			sanitizedCategory = 'undefined';
-			break;
+			case 'physical':
+			case 'special':
+			case 'status':
+				sanitizedCategory = categoryID.charAt(0).toUpperCase() + categoryID.slice(1);
+				break;
+			default:
+				sanitizedCategory = 'undefined';
+				break;
 		}
 		const alt = BattleLog.escapeHTML(TL.tag[categoryID] || sanitizedCategory);
 		return `<img src="${Dex.resourcePrefix}sprites/categories/${sanitizedCategory}.png" alt="${alt}" height="14" width="32" class="pixelated" />`;

@@ -960,6 +960,12 @@ facing='back';
 }
 
 
+if(species.num>10000){
+spriteData.url='http://localhost:8080/sprites/gen5'+dir+'/'+name+'.png';
+return spriteData;
+}
+
+
 
 
 
@@ -1168,6 +1174,18 @@ spriteid=species.spriteid||id;
 }
 }
 if(species.exists===false)return{spriteDir:'sprites/gen5',spriteid:'0',x:10,y:5,pixelated:true};
+
+
+if(species.num>10000){
+return{
+spriteid:spriteid||species.spriteid||id,
+spriteDir:'http://localhost:8080/sprites/dex',
+x:-2,
+y:-3,
+pixelated:true
+};
+}
+
 if(Dex.afdMode){
 return{
 spriteid:spriteid,
@@ -1235,7 +1253,10 @@ if(!pokemon)return'';
 var data=this.getTeambuilderSpriteData(pokemon,dex);
 var shiny=data.shiny?'-shiny':'';
 var resize=data.h?"background-size:"+data.h+"px":'';
-return"background-image:url("+Dex.resourcePrefix+data.spriteDir+shiny+"/"+data.spriteid+".png);background-position:"+(data.x+xOffset)+"px "+(data.y+yOffset)+"px;background-repeat:no-repeat;"+resize;
+var spriteUrl=data.spriteDir.startsWith('http')?
+data.spriteDir+"/"+data.spriteid+".png":""+
+Dex.resourcePrefix+data.spriteDir+shiny+"/"+data.spriteid+".png";
+return"background-image:url("+spriteUrl+");background-position:"+(data.x+xOffset)+"px "+(data.y+yOffset)+"px;background-repeat:no-repeat;"+resize;
 };_proto2.
 
 getItemIcon=function getItemIcon(item){var _item;

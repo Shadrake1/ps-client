@@ -7,6 +7,7 @@ header('X-Frame-Options: DENY');
 header('X-XSS-Protection: 1; mode=block');
 header('X-Content-Type-Options: nosniff');
 
+const POKEMON_SHOWDOWN_TESTCLIENT_KEY = 'rrat_gimmick,164034848,b6f99d5f5eb3ca301789064438';
 ?>
 <!DOCTYPE html>
 <meta charset="UTF-8" />

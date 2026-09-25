@@ -926,14 +926,20 @@ class LoginPanel extends PSRoomPanel {
 		return PS.user.named ? PS.user.name : '';
 	}
 	handleSubmit = (ev: Event) => {
-		ev.preventDefault();
-		const passwordBox = this.base!.querySelector<HTMLInputElement>('input[name=password]');
-		if (passwordBox) {
-			PS.user.changeNameWithPassword(this.getUsername(), passwordBox.value);
-		} else {
-			PS.user.changeName(this.getUsername());
-		}
-	};
+    	ev.preventDefault();
+    	const name = this.getUsername();
+	    // For unregistered servers, skip the PS login server entirely
+	    if (!Config.defaultserver?.registered) {
+ 	       PS.user.handleAssertion(name, 'noverify');
+ 	       return;
+ 	   }
+	    const passwordBox = this.base!.querySelector<HTMLInputElement>('input[name=password]');
+	    if (passwordBox) {
+ 	       PS.user.changeNameWithPassword(name, passwordBox.value);
+ 	   } else {
+  	      PS.user.changeName(name);
+ 	   }
+};
 	update = () => {
 		this.forceUpdate();
 	};

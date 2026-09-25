@@ -925,13 +925,19 @@ LoginPanel=function(_PSRoomPanel6){function LoginPanel(){var _this12;for(var _le
 
 
 
-handleSubmit=function(ev){
+handleSubmit=function(ev){var _Config$defaultserver;
 ev.preventDefault();
+var name=_this12.getUsername();
+
+if(!((_Config$defaultserver=Config.defaultserver)!=null&&_Config$defaultserver.registered)){
+PS.user.handleAssertion(name,'noverify');
+return;
+}
 var passwordBox=_this12.base.querySelector('input[name=password]');
 if(passwordBox){
-PS.user.changeNameWithPassword(_this12.getUsername(),passwordBox.value);
+PS.user.changeNameWithPassword(name,passwordBox.value);
 }else{
-PS.user.changeName(_this12.getUsername());
+PS.user.changeName(name);
 }
 };_this12.
 update=function(){
