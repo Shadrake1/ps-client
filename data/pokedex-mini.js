@@ -1667,7 +1667,6 @@ exports.BattlePokemonSprites = {
 	kosekibijou:{num:10032},
 	megalodon:{num:10033},
 	gigimurin:{num:10034},
-	bao:{num:-44},
 	zentreya:{num:10037},
 	minatoaqua:{num:10038},
 	vedal:{num:10039},
@@ -1676,6 +1675,7 @@ exports.BattlePokemonSprites = {
 	crelly:{num:10042},
 	shoomimi:{num:10043},
 	amanekanata:{num:10044},
+	bao:{num:-44},
 	sixln:{num:20000},
 	shoppingcart:{num:20001}
 };
