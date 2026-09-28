@@ -93,7 +93,8 @@
 						id: m[1],
 						host: m[2],
 						port: (m[3] && parseInt(m[3].substr(1))) || 8000,
-        				registered: false  // ← add this line
+        				registered: false,  // ← add this line
+						ssl: true
 					};
 				} else {
 					alert('Unrecognised query string syntax: ' + location.search);
@@ -102,7 +103,7 @@
 		})();
 	</script>
 	<script nomodule src="/js/lib/ps-polyfill.js"></script>
-	<script src="../config/testclient-key.js"></script>
+	<script src="config/testclient-key.js"></script>
 	<script src="js/client-core.js" onerror="alert('You must build the client with `node build` before using testclient.html')"></script>
 
 	<script src="js/battle-dex-data.js"></script>
