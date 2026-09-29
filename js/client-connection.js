@@ -134,8 +134,10 @@ directConnect=function directConnect(){var _this3=this;
 if(this.worker)return;
 
 var server=PS.server;
-var port=server.protocol==='https'?":"+server.port:":"+server.httpport;
-var url=server.protocol+"://"+server.host+port+server.prefix;
+var ssl=server.ssl||server.protocol==='https';
+var port=ssl?":"+server.port:":"+server.httpport;
+var protocol=ssl?'https':'http';
+var url=protocol+"://"+server.host+port+server.prefix;
 
 try{
 this.socket=new SockJS(url,[],{timeout:5*60*1000});

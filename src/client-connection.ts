@@ -134,8 +134,10 @@ export class PSConnection {
 		if (this.worker) return; // must be one or the other
 
 		const server = PS.server;
-		const port = server.protocol === 'https' ? `:${server.port}` : `:${server.httpport!}`;
-		const url = `${server.protocol}://${server.host}${port}${server.prefix}`;
+		const ssl = server.ssl || server.protocol === 'https';
+		const port = ssl ? `:${server.port}` : `:${server.httpport!}`;
+		const protocol = ssl ? 'https' : 'http';
+		const url = `${protocol}://${server.host}${port}${server.prefix}`;
 
 		try {
 			this.socket = new SockJS(url, [], { timeout: 5 * 60 * 1000 });
