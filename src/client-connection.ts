@@ -135,7 +135,7 @@ export class PSConnection {
 
 		const server = PS.server;
 		const ssl = server.protocol === 'https' || server.port === 443;
-		const port = `:${server.port || server.httpport || 443}`;
+		const port = server.port ? `:${server.port}` : server.httpport ? `:${server.httpport}` : `:443`;
 		const protocol = ssl ? 'https' : 'http';
 		const url = `${protocol}://${server.host}${port}${server.prefix}`;
 
