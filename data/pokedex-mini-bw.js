@@ -1674,7 +1674,7 @@ exports.BattlePokemonSpritesBW = {
 	crelly:{num:10042},
 	shoomimi:{num:10043},
 	amanekanata:{num:10044},
-	bao:{num:10045},
+	baovt:{num:10045},
 	rosiebellmoo:{num:10046},
 	ameliawatson:{num:10045},
 	sixln:{num:20000},
