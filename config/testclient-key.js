@@ -1,0 +1,1 @@
+const POKEMON_SHOWDOWN_TESTCLIENT_KEY = 'guest,1,dummy';
