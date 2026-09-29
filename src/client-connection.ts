@@ -134,8 +134,8 @@ export class PSConnection {
 		if (this.worker) return; // must be one or the other
 
 		const server = PS.server;
-		const ssl = server.ssl || server.protocol === 'https';
-		const port = ssl ? `:${server.port}` : `:${server.httpport!}`;
+		const ssl = server.protocol === 'https' || server.port === 443;
+		const port = `:${server.port || server.httpport || 443}`;
 		const protocol = ssl ? 'https' : 'http';
 		const url = `${protocol}://${server.host}${port}${server.prefix}`;
 

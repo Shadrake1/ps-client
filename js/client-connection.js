@@ -134,8 +134,8 @@ directConnect=function directConnect(){var _this3=this;
 if(this.worker)return;
 
 var server=PS.server;
-var ssl=server.ssl||server.protocol==='https';
-var port=ssl?":"+server.port:":"+server.httpport;
+var ssl=server.protocol==='https'||server.port===443;
+var port=":"+(server.port||server.httpport||443);
 var protocol=ssl?'https':'http';
 var url=protocol+"://"+server.host+port+server.prefix;
 
