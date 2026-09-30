@@ -64,13 +64,17 @@ function connectToServer() {
 	if (!serverInfo) return;
 	if (socket) return; // already connected or connecting
 
-	const port = serverInfo.protocol === 'https' ? '' : `:${serverInfo.port}`;
-	const url = `${serverInfo.protocol}://${serverInfo.host}${port}${serverInfo.prefix}`;
+	// Fixed - handles SSL via port 443
+	const ssl = serverInfo.protocol === 'https' || serverInfo.port === 443;
+	const port = `:${serverInfo.port || 443}`;
+	const protocol = ssl ? 'wss' : 'ws';
+	const url = `${protocol}://${serverInfo.host}${port}${serverInfo.prefix}/websocket`;
 
 	try {
-		socket = new WebSocket(url.replace('http', 'ws') + '/websocket');
+		socket = new WebSocket(url);
 	} catch {
-		socket = new SockJS(url, [], { timeout: 5 * 60 * 1000 });
+		const httpUrl = url.replace('wss://', 'https://').replace('ws://', 'http://').replace('/websocket', '');
+		 socket = new SockJS(httpUrl, [], { timeout: 5 * 60 * 1000 });
 	}
 	if (socket) {
 		socket.onopen = () => {
