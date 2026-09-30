@@ -86,7 +86,8 @@ export class PSConnection {
 		}
 
 		try {
-			const worker = new Worker('/js/client-connection-worker.js');
+			const workerPath = location.pathname.replace(/\/[^/]*$/, '/js/client-connection-worker.js');
+			const worker = new Worker(workerPath);
 			this.worker = worker;
 
 			worker.postMessage({ type: 'connect', server: PS.server });

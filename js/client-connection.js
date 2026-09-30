@@ -86,7 +86,8 @@ return true;
 }
 
 try{
-var worker=new Worker('/js/client-connection-worker.js');
+var workerPath=location.pathname.replace(/\/[^/]*$/,'/js/client-connection-worker.js');
+var worker=new Worker(workerPath);
 this.worker=worker;
 
 worker.postMessage({type:'connect',server:PS.server});
