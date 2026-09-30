@@ -61,22 +61,17 @@ setInterval(() => {
 }, KEEPALIVE_INTERVAL);
 
 function connectToServer() {
-	if (!serverInfo) return;
-	if (socket) return; // already connected or connecting
+    if (!serverInfo) return;
+    if (socket) return;
 
-	// Fixed - handles SSL via port 443
-	const ssl = serverInfo.protocol === 'https' || serverInfo.port === 443;
-	const port = `:${serverInfo.port || 443}`;
-	const protocol = ssl ? 'wss' : 'ws';
-	const url = `${protocol}://${serverInfo.host}${port}${serverInfo.prefix}/websocket`;
+    const ssl = serverInfo.protocol === 'https' || Number(serverInfo.port) === 443;
+    const port = `:${serverInfo.port || 443}`;
+    const wsProtocol = ssl ? 'wss' : 'ws';
+    const url = `${wsProtocol}://${serverInfo.host}${port}${serverInfo.prefix}/websocket`;
 
-	try {
-		socket = new WebSocket(url);
-	} catch {
-		const httpUrl = url.replace('wss://', 'https://').replace('ws://', 'http://').replace('/websocket', '');
-		 socket = new SockJS(httpUrl, [], { timeout: 5 * 60 * 1000 });
-	}
-	if (socket) {
+    // No SockJS fallback - SockJS isn't available in Worker context
+    socket = new WebSocket(url);
+    if (socket) {
 		socket.onopen = () => {
 			reconnectDelay = 1000;
 			lastReceiveTime = Date.now();

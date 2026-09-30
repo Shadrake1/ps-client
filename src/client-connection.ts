@@ -135,16 +135,17 @@ export class PSConnection {
 		if (this.worker) return; // must be one or the other
 
 		const server = PS.server;
-		const ssl = server.protocol === 'https' || server.port === 443;
-		const port = server.port ? `:${server.port}` : server.httpport ? `:${server.httpport}` : `:443`;
-		const protocol = ssl ? 'https' : 'http';
-		const url = `${protocol}://${server.host}${port}${server.prefix}`;
+	const ssl = server.protocol === 'https' || Number(server.port) === 443;
+	const port = `:${server.port || server.httpport || 443}`;
+	const wsProtocol = ssl ? 'wss' : 'ws';
+	const wsUrl = `${wsProtocol}://${server.host}${port}${server.prefix}/websocket`;
 
-		try {
-			this.socket = new SockJS(url, [], { timeout: 5 * 60 * 1000 });
-		} catch {
-			this.socket = new WebSocket(url.replace('http', 'ws') + '/websocket');
-		}
+	try {
+		this.socket = new WebSocket(wsUrl);
+	} catch {
+		 const httpUrl = `${ssl ? 'https' : 'http'}://${server.host}${port}${server.prefix}`;
+		this.socket = new SockJS(httpUrl, [], { timeout: 5 * 60 * 1000 });
+	}
 
 		const socket = this.socket!;
 

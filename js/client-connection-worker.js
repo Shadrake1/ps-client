@@ -64,18 +64,13 @@ function connectToServer(){
 if(!serverInfo)return;
 if(socket)return;
 
-
-var ssl=serverInfo.protocol==='https'||serverInfo.port===443;
+var ssl=serverInfo.protocol==='https'||Number(serverInfo.port)===443;
 var port=":"+(serverInfo.port||443);
-var protocol=ssl?'wss':'ws';
-var url=protocol+"://"+serverInfo.host+port+serverInfo.prefix+"/websocket";
+var wsProtocol=ssl?'wss':'ws';
+var url=wsProtocol+"://"+serverInfo.host+port+serverInfo.prefix+"/websocket";
 
-try{
+
 socket=new WebSocket(url);
-}catch(_unused){
-var httpUrl=url.replace('wss://','https://').replace('ws://','http://').replace('/websocket','');
-socket=new SockJS(httpUrl,[],{timeout:5*60*1000});
-}
 if(socket){
 socket.onopen=function(){
 reconnectDelay=1000;

@@ -135,15 +135,16 @@ directConnect=function directConnect(){var _this3=this;
 if(this.worker)return;
 
 var server=PS.server;
-var ssl=server.protocol==='https'||server.port===443;
-var port=server.port?":"+server.port:server.httpport?":"+server.httpport:":443";
-var protocol=ssl?'https':'http';
-var url=protocol+"://"+server.host+port+server.prefix;
+var ssl=server.protocol==='https'||Number(server.port)===443;
+var port=":"+(server.port||server.httpport||443);
+var wsProtocol=ssl?'wss':'ws';
+var wsUrl=wsProtocol+"://"+server.host+port+server.prefix+"/websocket";
 
 try{
-this.socket=new SockJS(url,[],{timeout:5*60*1000});
+this.socket=new WebSocket(wsUrl);
 }catch(_unused2){
-this.socket=new WebSocket(url.replace('http','ws')+'/websocket');
+var httpUrl=(ssl?'https':'http')+"://"+server.host+port+server.prefix;
+this.socket=new SockJS(httpUrl,[],{timeout:5*60*1000});
 }
 
 var socket=this.socket;
