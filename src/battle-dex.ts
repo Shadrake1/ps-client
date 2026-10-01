@@ -959,10 +959,11 @@ export const Dex = new class implements ModdedDex {
 			facing = 'back';
 		}
 
-		// Custom Pokemon (num > 10000): serve from local http-server
+		// Custom Pokemon (num > 10000): serve from current host
 		if (species.num > 10000) {
-			spriteData.url = 'http://localhost:8080/sprites/gen5' + dir + '/' + name + '.png';
-			return spriteData;
+			 const customBase = window.location.origin + window.location.pathname.replace(/\/[^/]*$/, '');
+			 spriteData.url = customBase + '/sprites/gen5' + dir + '/' + name + '.png';
+			 return spriteData;
 		}
 
 		// Decide which gen sprites to use.
@@ -1175,15 +1176,16 @@ export const Dex = new class implements ModdedDex {
 		}
 		if (species.exists === false) return { spriteDir: 'sprites/gen5', spriteid: '0', x: 10, y: 5, pixelated: true };
 
-		// Custom Pokemon (num > 10000): serve from local http-server
+		// Custom Pokemon (num > 10000): serve from current host
 		if (species.num > 10000) {
-			return {
-				spriteid: spriteid || species.spriteid || id,
-				spriteDir: 'http://localhost:8080/sprites/dex',
-				x: -2,
-				y: -3,
-				pixelated: true,
-			};
+		  const customBase = window.location.origin + window.location.pathname.replace(/\/[^/]*$/, '');
+		  return {
+			   spriteid: spriteid || species.spriteid || id,
+			   spriteDir: customBase + '/sprites/dex',
+			   x: -2,
+			   y: -3,
+			   pixelated: true,
+			 };
 		}
 
 		if (Dex.afdMode) {
