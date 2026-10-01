@@ -1644,7 +1644,6 @@ exports.BattlePokemonSpritesBW = {
 	gawrguraprimal:{num:10010},
 	ceresfauna:{num:10011},
 	hakosbaelz:{num:10012},
-	chiurunika:{num:10013},
 	moricaliope:{num:10014},
 	laynalazar:{num:10015},
 	haachama:{num:10016},
@@ -1676,7 +1675,9 @@ exports.BattlePokemonSpritesBW = {
 	amanekanata:{num:10044},
 	baovt:{num:10045},
 	rosiebellmoo:{num:10046},
-	ameliawatson:{num:10045},
+	ameliawatson:{num:10047},
+	akumanihmune:{num:10048},
+	chiurunika:{num:10013},
 	sixln:{num:20000},
 	shoppingcart:{num:20001}
 };
