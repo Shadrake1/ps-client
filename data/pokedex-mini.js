@@ -1647,7 +1647,7 @@ exports.BattlePokemonSprites = {
 	hakosbaelz:{num:10012},
 	moricaliope:{num:10014},
 	laynalazar:{num:10015},
-	haachama:{num:10016},
+	akaihaatoother:{num:10016},
 	akaihaato:{num:10017},
 	inugamikorone:{num:10018},
 	ninomaeinanis:{num:10019},
